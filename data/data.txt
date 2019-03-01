@@ -1,0 +1,4 @@
+numClientes = 20
+numServidores = 5
+numMensajesCliente = 10
+bufferTam = 5

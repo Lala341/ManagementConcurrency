@@ -1,36 +1,30 @@
 
 public class Cliente extends Thread{
-	
-	private static int numMensajes;//DUDA STATIC?
+
+	private int numMensajes;
 	private static Buffer buffer;
-	
+
 	public Cliente(int i, Buffer buffer) {
-		// TODO Auto-generated constructor stub
-		this.numMensajes=i;
-		this.buffer=buffer;
+		this.numMensajes = i;
+		Cliente.buffer = buffer;
 	}
-	
+
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		for (int i = 0; i < numMensajes; i++) {
-			Mensaje actual= new Mensaje((int) Math.random());
-			buffer.almacenar(actual);
+			Mensaje mensaje = new Mensaje((int) (Math.random()*100));
+			buffer.almacenar(mensaje);
 			try {
-				actual.wait();
-				
+				synchronized (mensaje) {
+					mensaje.wait();
+				}
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
-			if(i==numMensajes-1){
-				buffer.retirarCliente();
-			}
+
 		}
+		buffer.retirarCliente();	
+		System.out.println("Cliente retirado");
 	}
-	
-	
 
 }
